@@ -7,10 +7,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
+import fr_core_news_sm
 
 # Charger le modèle français de spaCy
-nlp = spacy.load("fr_core_news_sm")
+# nlp = spacy.load("fr_core_news_sm")
+nlp = fr_core_news_sm.load()
 
 def recup_evenements(department : str = "Eure", year: str = "2026") ->dict:
 
