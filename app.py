@@ -1,5 +1,5 @@
 import streamlit as st
-from chatbot import chat
+from utils.chatbot import chat
 import httpx
 import time
 
