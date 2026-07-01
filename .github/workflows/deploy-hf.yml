@@ -13,14 +13,14 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-          
-      - name: Retirer les fichiers Faiss
+
+      - name: Purger les Faiss de l'historique
         run: |
           git config user.email "ci@github.com"
           git config user.name "CI"
-          git rm -r --cached utils/faiss_index || true
-          git rm --cached *.faiss || true
-          git commit -m "Retire les Faiss pour HF" || true
+          git filter-branch --force --index-filter \
+            'git rm -r --cached --ignore-unmatch utils/faiss_index' \
+            --prune-empty --tag-name-filter cat -- --all
 
       - name: Pousser vers HF Space
         env:
