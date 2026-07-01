@@ -13,5 +13,3 @@ streamlit-feedback>=0.1.4
 umap-learn>=0.5.12
 torch>=2.12.0
 torchvision>=0.17.0
-spacy==3.8.0
-https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-3.8.0/fr_core_news_sm-3.8.0-py3-none-any.whl

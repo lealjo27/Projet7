@@ -16,7 +16,6 @@ dependencies = [
     "ragas>=0.4.3",
     "seaborn>=0.13.2",
     "sentence-transformers>=3.0.0",
-    "spacy>=3.8.0",
     "streamlit>=1.41.0",
     "streamlit-feedback>=0.1.4",
     "torch>=2.5.0",
