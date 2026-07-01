@@ -7,9 +7,11 @@ import os
 import shutil
 import pandas as pd
 import re 
+from pathlib import Path
 
 # Configuration commune
-INDEX_PATH = "faiss_index"
+# INDEX_PATH = "faiss_index"
+INDEX_PATH = Path(__file__).resolve().parent / "faiss_index"
 
 def get_embeddings(api_key):
     # Essayez "mistral-embed" (attention aux espaces) 
@@ -102,7 +104,7 @@ def construire_index_langchain(df, api_key):
         vectorstore.add_documents(lot)
 
     # 7. Sauvegarde
-    vectorstore.save_local(INDEX_PATH)
+    vectorstore.save_local(str(INDEX_PATH))
 
     print(f"Succès : index HNSW sauvegardé dans {INDEX_PATH}")
     print("Nombre total de vecteurs indexés :", vectorstore.index.ntotal)
