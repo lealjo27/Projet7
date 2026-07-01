@@ -16,3 +16,4 @@ torchvision>=0.17.0
 uvicorn
 fastapi
 python-jose[cryptography]>=3.5.0
+bcrypt
