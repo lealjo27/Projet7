@@ -13,6 +13,14 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
+          
+      - name: Retirer les fichiers Faiss
+        run: |
+          git config user.email "ci@github.com"
+          git config user.name "CI"
+          git rm -r --cached utils/faiss_index || true
+          git rm --cached *.faiss || true
+          git commit -m "Retire les Faiss pour HF" || true
 
       - name: Pousser vers HF Space
         env:
