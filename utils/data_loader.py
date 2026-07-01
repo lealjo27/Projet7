@@ -2,14 +2,12 @@ import requests
 import pandas as pd
 import re
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-import spacy
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 
 
-# Charger le modèle français de spaCy
-nlp = spacy.load("fr_core_news_sm")
+
 
 def recup_evenements(department : str = "Eure", year: str = "2026") ->dict:
 
@@ -83,49 +81,24 @@ def nettoyer_df(df):
     return df
 
 
-def semantic_chunking(text, max_chunk_size=150):
-    """
-    Découpe le texte en chunks basés sur les phrases (semantique)
-    """
-    doc = nlp(text)
-    segments = []
-    current_segment = []
-    
-    for sent in doc.sents:
-        current_text = " ".join(current_segment)
-        # Vérifier si ajouter la phrase dépasse la limite
-        if len(current_text) + len(sent.text) + 1 <= max_chunk_size:
-            current_segment.append(sent.text)
-        else:
-            # Sauvegarder le segment actuel s'il n'est pas vide
-            if current_segment:
-                segments.append(" ".join(current_segment))
-            # Commencer un nouveau segment
-            current_segment = [sent.text]
-    
-    # Ajouter le dernier segment s'il n'est pas vide
-    if current_segment:
-        segments.append(" ".join(current_segment))
-    
-    return segments
-
 def chunking(df):
     all_chunks = []
+
+    splitter = RecursiveCharacterTextSplitter(
+    chunk_size=300,
+    chunk_overlap=50
+)
+
     
     for idx, row in df.iterrows():
-        text = row["text"]
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=500,
-            chunk_overlap=50
-        )
-        chunks = semantic_chunking(text, max_chunk_size=300)
-        
+        chunks = splitter.split_text(row["text"])
+                
         for chunk in chunks:
             all_chunks.append({
                 "text": chunk,
                 "uid": row["uid"],
                 "title_fr": row["title_fr"],
-                "description_fr": row["description_fr"],  # ✅ Ajouter si besoin
+                "description_fr": row["description_fr"], 
                 "location_city": row["location_city"],
                 "location_address": row["location_address"],
                 "daterange_fr": row["daterange_fr"],
