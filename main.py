@@ -48,7 +48,7 @@ if __name__ == "__main__":
 # recherche
     # recherche("sortie vélo familiale")
 # indexation
-    index("Seine-Maritime", "2026")
+    index("Eure", "2026")
 # verification     
     # df = load_events(department="Eure", year="2026")
     # verifier_indexation(df)
