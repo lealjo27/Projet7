@@ -17,3 +17,4 @@ uvicorn
 fastapi
 python-jose[cryptography]>=3.5.0
 bcrypt
+pytest
