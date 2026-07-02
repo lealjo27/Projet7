@@ -6,9 +6,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
-
-
 def recup_evenements(department : str = "Eure", year: str = "2026") ->dict:
 
     url = (

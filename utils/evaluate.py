@@ -7,23 +7,18 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-
 # 1. Patch Vertex AI
 sys.modules['langchain_community.chat_models.vertexai'] = MagicMock()
 
-
-
-
-# 2. Permettre l'import de ton chatbot (même dossier utils/)
+# 2. Permettre l'import du chatbot (même dossier utils/)
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # 3. Imports
 from openai import AsyncOpenAI
 from ragas import evaluate, EvaluationDataset
 from ragas.llms import llm_factory
-from ragas.metrics import Faithfulness, ContextPrecision, _context_recall, _answer_relevance
 
-from chatbot import chat_ragas   # ← ton vrai chatbot
+from chatbot import chat_ragas  
 
 # Limiter à 1 requête en parallèle + tolérer les pauses
 from ragas.run_config import RunConfig
@@ -36,14 +31,13 @@ run_config = RunConfig(
 )
 
 from ragas.metrics import Faithfulness, ContextPrecision, AnswerRelevancy, ContextRecall
-from ragas.embeddings import embedding_factory
 
 
 # 4. Config env
 base_dir = Path(__file__).resolve().parent.parent
 load_dotenv(dotenv_path=base_dir / ".env", override=True)
 
-# 5. LLM juge (Groq)
+# 5. LLM juge
 raw_client = AsyncOpenAI(
     base_url="https://api.mistral.ai/v1",
     api_key=os.getenv("MISTRAL_API_KEY"),
@@ -57,7 +51,6 @@ embeddings = MistralAIEmbeddings(
     api_key=os.getenv("MISTRAL_API_KEY"),
 )
 
-
 # 6. Métriques
 metrics = [Faithfulness(llm=llm),
            ContextPrecision(llm=llm),
@@ -65,11 +58,11 @@ metrics = [Faithfulness(llm=llm),
            AnswerRelevancy(llm=llm, embeddings=embeddings)]
 
 
-# 7. TON jeu de test : questions + réponses attendues (à compléter)
+# 7.  jeu de test : questions + réponses attendues 
 golden = [
     {
         "user_input": "Quels événements ont lieu à Saint Mards de Fresne en 2026 ?",
-        "reference": "Exposition de photographies d'hier à aujourd'hui, et visite libre de l'église",   # ⬅️ TU remplis avec la vraie réponse attendue
+        "reference": "Exposition de photographies d'hier à aujourd'hui, et visite libre de l'église",   
     },
     {
         "user_input": "Y a-t-il des concerts dans l'Eure ?",
@@ -88,7 +81,7 @@ golden = [
 
 ]
 
-# 8. On fait répondre TON chatbot sur chaque question
+# 8. On fait répondre  chatbot sur chaque question
 eval_data = []
 for item in golden:
     sortie = chat_ragas(item["user_input"])   # {"answer":..., "contexts":[...]}
