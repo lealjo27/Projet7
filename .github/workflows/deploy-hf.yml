@@ -23,6 +23,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Lancer pytest
+        env:
+            LOGIN: ${{ secrets.LOGIN }}
+            MDP: ${{ secrets.MDP }}
         run: pytest -v
 
   # ─── JOB 2 : Déploiement (seulement si test réussit) ───
