@@ -27,6 +27,7 @@ jobs:
             LOGIN: ${{ secrets.LOGIN }}
             MDP: ${{ secrets.MDP }}
             MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY}}
+            SECRET_KEY: ${{ secrets.SECRET_KEY}}
         run: pytest -v
 
   # ─── JOB 2 : Déploiement (seulement si test réussit) ───
